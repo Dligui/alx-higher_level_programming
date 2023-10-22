@@ -1,16 +1,17 @@
 #!/usr/bin/python3
+"""
+Defines a City class
+"""
 
-""" finction that contains the class City """
-
-import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey
 from model_state import Base, State
+from sqlalchemy import Column, Integer, String, ForeignKey
 
 
 class City(Base):
-    """Representation of a city"""
-    __tablename__ = "cities"
+    """
+    City class representing the 'cities' table in the database.
+    """
+    __tablename__ = 'cities'
     id = Column(Integer, primary_key=True)
     name = Column(String(128), nullable=False)
-    state_id = Column(Integer, ForeignKey('states.id'))
-
+    state_id = Column(Integer, ForeignKey('states.id'), nullable=False)

@@ -1,24 +1,26 @@
 #!/usr/bin/python3
 """
-function that lists the first State object from a database
+This script connects to a MySQL database, retrieves the first State object
+ordered by ID, and prints its information.
 """
 
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sys import argv
 from model_state import Base, State
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 if __name__ == "__main__":
-    eng = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(argv[1],
-                                                                    argv[2],
-                                                                    argv[3]))
-    Base.metadata.create_all(eng)
+    """
+    Access the database, retrieve the first State object ordered by
+    ID, and print its information.
+    """
+    database = 'mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
+        argv[1], argv[2], argv[3])
+    eng = create_engine(database)
     Session = sessionmaker(bind=eng)
     session = Session()
-    first_state = session.query(State).order_by(State.id).first()
-    if first_state is not None:
-        print("{}: {}".format(first_state.id, first_state.name))
+    inst = session.query(State).order_by(State.id).first()
+    if inst is None:
+        print('Nothing')
     else:
-        print("Nothing")
-    session.close()
+        print('{0}: {1}'.format(inst.id, inst.name))
